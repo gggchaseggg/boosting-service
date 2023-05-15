@@ -1,0 +1,13 @@
+﻿.colorLink {
+    color: papayawhip;
+    padding-top: 2px;
+    border-bottom: 2px solid transparent;
+    list-style: none;
+    text-decoration: none;
+
+    &:hover, &:any-link, &:visited, &:active {
+        color: #F9F9F9;
+        text-decoration: none;
+        font-weight: 700;
+    }
+}

@@ -1,0 +1,275 @@
+﻿.wrapper {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 550px;
+    padding-top: 70px;
+}
+
+#boost, #calibration, #lp, #wins, #behavior {
+    display: none;
+}
+
+//Кнопки  для перехода между услугами
+.radioButtons {
+    width: 900px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    & label {
+        width: 50%;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 40px;
+        text-align: center;
+        color: #000000;
+        border: 2px solid rgba(0, 0, 0, 0.1);
+        border-radius: 6px;
+        transition: border-bottom-color 0.3s linear;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+//Активная кнопка перехода
+input#boost:checked ~ label#boostLabel,
+input#calibration:checked ~ label#calibrationLabel,
+input#lp:checked ~ label#lpLabel,
+input#wins:checked ~ label#winsLabel,
+input#behavior:checked ~ label#behaviorLabel {
+    background: linear-gradient(to top left, #810CA8, #C147E9);
+    color: #F9F9F9;
+    border-radius: 6px;
+}
+
+//Формы
+.boostForm, .calibrationForm, .lpForm, .winsForm, .behaviorForm {
+    display: none;
+    padding-top: 50px;
+    height: auto;
+    width: 900px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+
+    h5 {
+        margin-top: 10px;
+        color: #F58840;
+    }
+
+    & > form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+.forDisplay {
+    display: flex;
+    justify-content: space-around;
+    height: 100%;
+    width: 100%;
+}
+
+.forDisplay1 {
+    display: flex;
+    height: 50px;
+    width: 140px;
+
+    label {
+        font-size: 14px;
+        padding-right: 7px;
+    }
+}
+
+.forDisplay2 {
+    height: 50px;
+    width: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-right: -px;
+}
+
+.forDisplay3 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 50px;
+    width: 140px;
+
+    label {
+        font-size: 14px;
+    }
+
+    h5 {
+        margin-top: 0px;
+        color: black;
+    }
+}
+
+.forDisplay4 {
+    margin-top: 40px;
+    padding-top: 10px;
+    height: 120px;
+    width: 160px;
+    border-radius: 6px;
+    border: 2px solid #A91079;
+    text-align: center;
+
+    h5 {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+}
+
+.forDisplayCalibration {
+    display: flex;
+    justify-content: space-around;
+    height: 100%;
+    width: 100%;
+}
+
+.forDisplay5 {
+    display: flex;
+    margin-right: 7%;
+
+    h5 {
+        margin: 0px 5px;
+    }
+}
+
+.forDisplayCountGames {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.discount {
+    color: #BDBDBD !important;
+    text-decoration: line-through;
+}
+
+.radioButtons:has(input#boost:checked) ~ .boostForm {
+    display: block;
+}
+
+.radioButtons:has(input#calibration:checked) ~ .calibrationForm {
+    display: block;
+}
+
+.radioButtons:has(input#lp:checked) ~ .lpForm {
+    display: block;
+}
+
+.radioButtons:has(input#wins:checked) ~ .winsForm {
+    display: block;
+}
+
+.radioButtons:has(input#behavior:checked) ~ .behaviorForm {
+    display: block;
+}
+
+//Поля ввода
+.ininput {
+    width: 100px;
+    height: 40px;
+    background: #DDDFE6;
+    border-radius: 6px;
+    outline: none;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    color: #00093C;
+    border: 2px solid transparent;
+    text-align: center;
+
+    &:hover {
+        background: rgba(221, 223, 230, 0.7);
+        border: 1px solid #A91079;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    &:focus {
+        border: 2px solid #A91079;
+    }
+
+    &::placeholder {
+        font-family: 'Montserrat',sans-serif;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 17px;
+        color: #A91079;
+    }
+}
+
+//Кнопка подтверждения
+.submit {
+    height: 50px;
+    padding: 0 60px;
+    margin: 10px 0;
+    background: linear-gradient(to top left,#810CA8, #C147E9);
+    border-radius: 6px;
+    border: none;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 26px;
+    color: #FFFFFF;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+
+    &:hover {
+        background: linear-gradient(to top left, #810CA8, #C147E9);
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    &:active {
+        box-shadow: none;
+        transform: translate(1px,1px);
+    }
+}
+
+a.submit {
+    text-decoration: none;
+
+    &:hover {
+        color: white;
+    }
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    margin-top: 15px;
+    width: 200px;
+    height: 7px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 5px;
+    background-image: linear-gradient(#FFD384, #FFD384);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+
+    &:focus {
+        outline: none;
+    }
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: #F58840;
+    cursor: ew-resize;
+    box-shadow: 0 0 2px 0 #555;
+    transition: background .3s ease-in-out;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+    box-shadow: none;
+    border: none;
+    background: transparent;
+}

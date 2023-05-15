@@ -1,0 +1,32 @@
+﻿.wrapper {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.exitButton {
+    height: 40px;
+    width: 70px;
+    margin-top: 10px;
+    margin-left: 85%;
+    background: linear-gradient(to top left,#D3756B, #A75D5D);
+    border-radius: 6px;
+    border: none;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 26px;
+    color: #FFFFFF;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+        background: linear-gradient(to top left, #A75D5D, #D3756B);
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    &:active {
+        box-shadow: none;
+        transform: translate(1px,1px);
+    }
+}

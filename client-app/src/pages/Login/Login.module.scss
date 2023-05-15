@@ -1,0 +1,139 @@
+﻿.wrapper {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 550px;
+    padding-top: 70px;
+
+}
+
+#login, #register {
+    display: none;
+}
+
+.radioButtons {
+    width: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    & label {
+        width: 50%;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 40px;
+        text-align: center;
+        color: #000000;
+        border: 2px solid rgba(0, 0, 0, 0.1);
+        border-radius: 6px;
+        transition: border-bottom-color 0.3s linear;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+input#login:checked ~ label#loginLabel,
+input#register:checked ~ label#registerLabel {
+    background: linear-gradient(to top left, #810CA8, #C147E9);
+    color: #F9F9F9;
+    border-radius: 6px;
+}
+
+.loginForm, .registerForm {
+    display: none;
+    padding-top: 50px;
+    height: auto;
+    width: 500px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius:6px;
+
+    & > form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+.radioButtons:has(input#login:checked) ~ .loginForm {
+    display: block;
+}
+
+.radioButtons:has(input#register:checked) ~ .registerForm {
+    display: block;
+}
+
+input.input {
+    width: 380px;
+    height: 50px;
+    background: #DDDFE6;
+    border-radius: 6px;
+    outline: none;
+    margin: 10px 0;
+    padding-left: 19px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    color: #00093C;
+    border: 2px solid transparent;
+
+    &:hover {
+        background: rgba(221, 223, 230, 0.7);
+        border: 1px solid #C147E9;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    &:focus {
+        border: 2px solid #C147E9;
+    }
+
+    &::placeholder {
+        font-family: 'Montserrat',sans-serif;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 17px;
+        color: #C147E9;
+    }
+}
+
+button.submit {
+    height: 50px;
+    padding: 0 60px;
+    margin: 10px 0;
+    background: linear-gradient(to top left, #810CA8, #C147E9);
+    border-radius: 6px;
+    border: none;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 26px;
+    color: #FFFFFF;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+        background: linear-gradient(to top left, #C147E9, #810CA8);
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    &:active {
+        box-shadow: none;
+        transform: translate(1px,1px);
+    }
+}
+.loginForm {
+    position: relative;
+
+    span.loginError {
+        position: absolute;
+        top: 32px
+    }
+}
+
+.registerForm {
+    position: relative;
+
+    span.registerError {
+        position: absolute;
+        top: 32px
+    }
+}
