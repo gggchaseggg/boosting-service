@@ -1,6 +1,7 @@
 package ru.borisova.boostingservice.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import ru.borisova.boostingservice.models.Order;
 import ru.borisova.boostingservice.models.User;
@@ -20,6 +21,8 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
+
+    private final PasswordEncoder encoder;
 
     public User getUserInfo(String email) {
         User userFromDB = userRepository.findFirstByEmail(email);
@@ -50,7 +53,12 @@ public class UserService {
     }
 
     public User register(RegisterModel model) {
-        User user = new User(model.regNickname, model.regEmail, model.regPhone, model.regPassword);
+        User user = new User(
+                model.regNickname,
+                model.regEmail,
+                model.regPhone,
+                encoder.encode(model.regPassword)
+        );
         return userRepository.save(user);
     }
 

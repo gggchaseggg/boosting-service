@@ -26,7 +26,7 @@ const Profile = () => {
     const [user, setUser] = React.useState<UserProfileTypes>();
 
     React.useEffect(() => 
-    { axios.get(`api/account/getUserInfo?email=${localStorage.getItem("email")}`).then(({data})=>setUser(data))}, [])
+    { axios.get(`api/account/getUserInfo`).then(({data})=>setUser(data))}, [])
 
     return (
         <div className={style.wrapper}>

@@ -1,6 +1,7 @@
 package ru.borisova.boostingservice.controllers;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,6 +13,7 @@ import ru.borisova.boostingservice.service.UserService;
 @RestController
 @RequestMapping("api/user")
 @AllArgsConstructor
+@PreAuthorize("hasAuthority('user')")
 public class UserController {
 
     private final UserService userService;
