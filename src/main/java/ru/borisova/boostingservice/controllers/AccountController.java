@@ -1,6 +1,8 @@
 package ru.borisova.boostingservice.controllers;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.borisova.boostingservice.models.User;
 import ru.borisova.boostingservice.models.viewModels.LoginModel;
@@ -15,13 +17,13 @@ public class AccountController {
     private final UserService userService;
 
     @GetMapping("getUserInfo")
-    public User getUserInfo(@RequestParam String email) {
-        return userService.getUserInfo(email);
+    public User getUserInfo(Authentication auth) {
+        return userService.getUserInfo(auth.getName());
     }
 
-    @GetMapping("getnickname/{email}")
-    public String getUserNicknameByEmail(@PathVariable String email) {
-        return userService.getUserNicknameByEmail(email);
+    @GetMapping("getnickname")
+    public String getUserNicknameByEmail(Authentication auth) {
+        return userService.getUserNicknameByEmail(auth.getName());
     }
 
     @GetMapping("existsemail")
@@ -29,10 +31,10 @@ public class AccountController {
         return userService.getUserByEmail(email);
     }
 
-    @PostMapping("login")
-    public String login(@RequestBody LoginModel model) {
-        return userService.login(model);
-    }
+//    @PostMapping("login")
+//    public String login(@RequestBody LoginModel model) {
+//        return userService.login(model);
+//    }
 
     @PostMapping("register")
     public User register(@RequestBody RegisterModel model) {

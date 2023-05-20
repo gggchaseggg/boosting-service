@@ -16,8 +16,8 @@ type FormRegisterValueType = {
 }
 
 type FormLoginValueType = {
-    logEmail: string;
-    logPassword: string;
+    username: string;
+    password: string;
 }
 
 const Login = () => {
@@ -58,18 +58,26 @@ const Login = () => {
     } = useForm<FormLoginValueType>();
 
     const onLoginSubmit: SubmitHandler<FormLoginValueType> = async (data) => {
-        const accountRole = await axios.post("/api/account/login", data).then(({ data }) => data);
-        if (accountRole === "err") {
+        const formData = new FormData()
+
+        formData.append('username', data.username)
+        formData.append('password', data.password)
+
+        const response = await axios.post("/api/account/login", formData)
+        if (response.status === 400) {
             localStorage.clear();
-            loginSetError("logEmail", { type: "custom", message: "chto-to ne tak" })
-        }
-        else {
-            localStorage.setItem("email", data.logEmail);
-            axios.get(`/api/account/getnickname/${data.logEmail}`).then(({ data }) => dispatch(setUser({ nickname: data })))
-            document.cookie = `role=${accountRole};`
-            loginReset();
+            loginSetError("username", { type: "custom", message: "chto-to ne tak" })
+        } else {
+            localStorage.setItem("email", data.username);
             navigate("/profile");
         }
+        // else {
+        //     localStorage.setItem("email", data.username);
+        //     axios.get(`/api/account/getnickname/${data.username}`).then(({ data }) => dispatch(setUser({ nickname: data })))
+        //     document.cookie = `role=${accountRole};`
+        //     loginReset();
+        //     navigate("/profile");
+        // }
     }
 
     return (
@@ -90,16 +98,16 @@ const Login = () => {
             <div className={style.loginForm}>
                 <form onSubmit={loginHandleSubmit(onLoginSubmit)}>
                     {
-                        loginErrors.logEmail && <span className={style.loginError}>Что-то пошло не так</span>
+                        loginErrors.username && <span className={style.loginError}>Что-то пошло не так</span>
                     }
                     <input type="email"
                         className={style.input}
-                        {...loginRegister("logEmail", { required: true })}
+                        {...loginRegister("username", { required: true })}
                         placeholder={"E-mail"}
                         autoComplete={"off"} />
                     <input type="password"
                         className={style.input}
-                        {...loginRegister("logPassword", { required: true })}
+                        {...loginRegister("password", { required: true })}
                         placeholder={"Пароль"}
                         autoComplete={"off"} />
                     <button type="submit" className={style.submit}>Войти</button>

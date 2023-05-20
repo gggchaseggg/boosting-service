@@ -22,8 +22,9 @@ export default function App() {
 
     React.useEffect(() => {
         var email = localStorage.getItem("email")
-        if (email !== null) axios.get(`/api/account/getnickname/${email}`).then(({ data }) => dispatch(setUser({ nickname: data })))
+        if (email !== null) axios.get(`/api/account/getnickname`).then(({ data }) => dispatch(setUser({ nickname: data })))
     }, [])
+    //TODO: когда будет MobX в зависимости сюда привязать юзера, чтобы ник сразу после логина обновлялся
 
 
     return (

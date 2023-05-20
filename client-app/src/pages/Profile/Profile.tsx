@@ -24,11 +24,18 @@ const Profile = () => {
     const navigate = useNavigate();
 
     const [user, setUser] = React.useState<UserProfileTypes>();
+    const [isLoading, setIsLoading] = React.useState(true)
 
-    React.useEffect(() => 
-    { axios.get(`api/account/getUserInfo?email=${localStorage.getItem("email")}`).then(({data})=>setUser(data))}, [])
+    React.useEffect(() => {
+        axios.get(`api/account/getUserInfo`)
+          .then(({data})=> {
+              setUser(data)
+              setIsLoading(false)
+          })
+          .catch(() => navigate("/login"))
+    }, [])
 
-    return (
+    return !isLoading ? (
         <div className={style.wrapper}>
             <button className={style.exitButton} onClick={
                 () => {
@@ -45,6 +52,6 @@ const Profile = () => {
                     : <BoosterProfile />
             }
         </div>
-    );
+    ) : <div className={style.wrapper}/>;
 }
 export default Profile;

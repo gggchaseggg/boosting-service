@@ -20,9 +20,7 @@ function AuthButton() {
     )
 }
 
-function sendOrder(order: FormType) {
-    axios.post("/api/order/create", order).then(r => console.log(r)).catch(e => console.info(e))
-}
+
 
 export default function Service() {
 
@@ -34,6 +32,15 @@ export default function Service() {
     const [lpcountgame, setLpcountgame] = useState(3);
     const [isAuth, setIsAuth] = useState(!!localStorage.getItem("email"))
     const [canOrder, setCanOrder] = useState(true);
+
+    function sendOrder(order: FormType) {
+        axios.post("/api/order/create", order)
+          .then(r => {
+              console.log(r)
+              setCanOrder(false)
+          })
+          .catch(e => console.info(e))
+    }
 
     const changeWidth = (event: any) => {
         setWidth(event.target.value);
@@ -79,6 +86,7 @@ export default function Service() {
                 startMMR: +mmrnow
             }
             sendOrder(boostOrder)
+
         }
 
     }
