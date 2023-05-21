@@ -1,6 +1,7 @@
 ﻿import axios from "axios";
 import React from "react";
 import style from "./UserProfile.module.scss";
+import {EditProfile} from "../components/EditProfile";
 
 type UserProfileTypes = {
     nickname: string;
@@ -38,7 +39,10 @@ const UserProfile = () => {
                         <img src="/img/Profile/logo.jpg" alt="лого" className={style.logo} />
                     </div>
                     <div className={style.infoUser}>
-                        <h3>{user?.nickname}</h3>
+                        <h3>
+                            {user?.nickname + "   "}
+                            <EditProfile/>
+                        </h3>
                         <h5>{user?.email}</h5>
                         <h5>{user?.phone}</h5>
                     </div>
