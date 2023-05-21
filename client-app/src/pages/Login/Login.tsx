@@ -3,8 +3,7 @@ import axios from "axios";
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import style from "./Login.module.scss";
-import { useAppDispatch } from "../../redux/hooks";
-import { setUser } from "../../redux/userSlice";
+import {userStore} from "../../mobx";
 
 type FormRegisterValueType = {
 
@@ -24,7 +23,6 @@ const Login = () => {
 
     const navigate = useNavigate();
 
-    const dispatch = useAppDispatch();
 
     const {
         register: registerRegister,
@@ -65,10 +63,22 @@ const Login = () => {
 
         const response = await axios.post("/api/account/login", formData)
         if (response.status === 400) {
-            localStorage.clear();
+            userStore.clear()
+            // localStorage.clear();
             loginSetError("username", { type: "custom", message: "chto-to ne tak" })
         } else {
-            localStorage.setItem("email", data.username);
+            axios.get('/api/account/getUserInfo')
+                .then(({data}) => {
+                    userStore.setAll(data.nickname, data.email, data.role)
+                })
+
+            // userStore.setEmail(data.username)
+            // // localStorage.setItem("email", data.username);
+            // axios.get(`/api/account/getnickname`)
+            //     .then(({ data }) => {
+            //         // dispatch(setUser({nickname: data}))
+            //         userStore.setNickname(data)
+            //     })
             navigate("/profile");
         }
         // else {
