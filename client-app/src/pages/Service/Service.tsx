@@ -1,9 +1,10 @@
 ﻿import React, { useEffect, useState } from "react";
 import style from "./Service.module.scss";
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PATHS from "../../data/paths";
 import axios from "axios";
+import {userStore} from "../../mobx";
 
 type FormType = {
     email: string;
@@ -20,20 +21,26 @@ function AuthButton() {
     )
 }
 
-function sendOrder(order: FormType) {
-    axios.post("/api/order/create", order).then(r => console.log(r)).catch(e => console.info(e))
-}
+
 
 export default function Service() {
 
-    const navigate = useNavigate();
 
     const [width, setWidth] = useState(300);
     const [mmrnow, setMmrnow] = useState(0);
     const [lastmmr, setLastmmr] = useState(1);
     const [lpcountgame, setLpcountgame] = useState(3);
-    const [isAuth, setIsAuth] = useState(!!localStorage.getItem("email"))
+    const isAuth = !!userStore.email
     const [canOrder, setCanOrder] = useState(true);
+
+    function sendOrder(order: FormType) {
+        axios.post("/api/order/create", order)
+          .then(r => {
+              console.log(r)
+              setCanOrder(false)
+          })
+          .catch(e => console.info(e))
+    }
 
     const changeWidth = (event: any) => {
         setWidth(event.target.value);
@@ -52,8 +59,8 @@ export default function Service() {
     };
 
     useEffect(() => {
-        let email = localStorage.getItem("email")
-        if (email !== null) axios.get(`/api/order/isUserHasOrders?email=${email}`).then((r) => {
+        const email = userStore.email
+        if (email) axios.get(`/api/order/isUserHasOrders?email=${email}`).then((r) => {
             if (r.data) setCanOrder(false)
             else if (!r.data) setCanOrder(true)
             else console.log(r)
@@ -69,16 +76,17 @@ export default function Service() {
 
     const onBoostSubmit: SubmitHandler<FormType> = async (data) => {
         if (!canOrder) alert("У вас уже есть заказ, завершите его или отмените")
-        else if (confirm("Вы действительно хотите оформить заказ?")) {
+        else if (window.confirm("Вы действительно хотите оформить заказ?")) {
             const boostOrder: FormType = {
                 cost: +width * 2.5 * 0.66,
                 countLP: 0,
-                email: localStorage.getItem("email") as string,
+                email: userStore.email as string,
                 endMMR: +mmrnow + +width,
                 service: data.service,
                 startMMR: +mmrnow
             }
             sendOrder(boostOrder)
+
         }
 
     }
@@ -92,11 +100,11 @@ export default function Service() {
 
     const onCalibrationSubmit: SubmitHandler<FormType> = async (data) => {
         if (!canOrder) alert("У вас уже есть заказ, завершите его или отмените")
-        else if (confirm("Вы действительно хотите оформить заказ?")) {
+        else if (window.confirm("Вы действительно хотите оформить заказ?")) {
             const calibrationOrder: FormType = {
                 cost: 1088,
                 countLP: 0,
-                email: localStorage.getItem("email") as string,
+                email: userStore.email as string,
                 // @ts-ignore
                 startMMR: +data.startMMR,
                 // @ts-ignore
@@ -117,13 +125,13 @@ export default function Service() {
 
     const onLpSubmit: SubmitHandler<FormType> = async (data) => {
         if (!canOrder) alert("У вас уже есть заказ, завершите его или отмените")
-        else if (confirm("Вы действительно хотите оформить заказ?")) {
+        else if (window.confirm("Вы действительно хотите оформить заказ?")) {
             const lpOrder: FormType = {
                 // @ts-ignore
                 cost: +data.countLP * 50,
                 // @ts-ignore
                 countLP: +data.countLP,
-                email: localStorage.getItem("email") as string,
+                email: userStore.email as string,
                 startMMR: 0,
                 endMMR: 0,
                 service: data.service

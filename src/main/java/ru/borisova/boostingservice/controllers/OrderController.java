@@ -1,6 +1,7 @@
 package ru.borisova.boostingservice.controllers;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.borisova.boostingservice.models.Order;
 import ru.borisova.boostingservice.models.viewModels.OrderViewModel;
@@ -14,8 +15,8 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping("isUserHasOrders")
-    public boolean isUserHasOrders(@RequestParam("email") String email) {
-        return orderService.isUserHasOrders(email);
+    public boolean isUserHasOrders(Authentication auth) {
+        return orderService.isUserHasOrders(auth.getName());
     }
 
     @PostMapping("create")

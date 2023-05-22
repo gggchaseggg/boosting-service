@@ -133,6 +133,8 @@ public class UserService {
                 user
         );
 
+        if (user == null || order == null) return null;
+
         order.status = status;
         orderRepository.save(order);
 

@@ -124,6 +124,8 @@ public class BoostService {
                 booster
         );
 
+        if (booster == null || order == null) return null;
+
         order.status = "Выполнен";
         orderRepository.save(order);
 

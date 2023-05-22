@@ -17,15 +17,13 @@ public class AccountController {
     private final UserService userService;
 
     @GetMapping("getUserInfo")
-    @PreAuthorize("hasAuthority('user')")
     public User getUserInfo(Authentication auth) {
-
         return userService.getUserInfo(auth.getName());
     }
 
-    @GetMapping("getnickname/{email}")
-    public String getUserNicknameByEmail(@PathVariable String email) {
-        return userService.getUserNicknameByEmail(email);
+    @GetMapping("getnickname")
+    public String getUserNicknameByEmail(Authentication auth) {
+        return userService.getUserNicknameByEmail(auth.getName());
     }
 
     @GetMapping("existsemail")

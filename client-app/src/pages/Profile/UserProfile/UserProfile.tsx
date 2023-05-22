@@ -1,6 +1,7 @@
 ﻿import axios from "axios";
 import React from "react";
 import style from "./UserProfile.module.scss";
+import {EditProfile} from "../components/EditProfile";
 
 type UserProfileTypes = {
     nickname: string;
@@ -26,8 +27,8 @@ const UserProfile = () => {
     const [canReloadOrder, setCanReloadOrder] = React.useState<boolean>(false)
 
     React.useEffect(() => {
-        axios.get(`api/user/getUserInfo?email=${localStorage.getItem("email")}`).then(({ data }) => setUser(data))
-        axios.get(`api/user/getNewOrderInfo?email=${localStorage.getItem("email")}`).then(({ data }) => setNewOrder(data))
+        axios.get(`api/user/getUserInfo`).then(({ data }) => setUser(data))
+        axios.get(`api/user/getNewOrderInfo`).then(({ data }) => setNewOrder(data))
     }, [canReloadOrder])
 
     return (
@@ -38,7 +39,10 @@ const UserProfile = () => {
                         <img src="/img/Profile/logo.jpg" alt="лого" className={style.logo} />
                     </div>
                     <div className={style.infoUser}>
-                        <h3>{user?.nickname}</h3>
+                        <h3>
+                            {user?.nickname + "   "}
+                            <EditProfile/>
+                        </h3>
                         <h5>{user?.email}</h5>
                         <h5>{user?.phone}</h5>
                     </div>
@@ -58,15 +62,15 @@ const UserProfile = () => {
                             newOrder?.status == "Ожидает оплаты"
                                 ? 
                                 <div><button type="submit" className={style.submit} onClick={() => {
-                                    axios.get(`/api/user/getStatusInProcess?email=${localStorage.getItem("email")}`).then(() => setCanReloadOrder(prevState => !prevState))
+                                    axios.get(`/api/user/getStatusInProcess`).then(() => setCanReloadOrder(prevState => !prevState))
                                 }}><span>Оплатить</span></button>
                                     <button type="submit" className={style.submit_cancel} onClick={() => {
-                                        axios.get(`/api/user/getStatusDelete?email=${localStorage.getItem("email")}`).then(() => setCanReloadOrder(prevState => !prevState))
+                                        axios.get(`/api/user/getStatusDelete`).then(() => setCanReloadOrder(prevState => !prevState))
                                     }}><span>Отменить</span></button>
                                 </div>
                                 : newOrder?.status == "Ожидает подтверждения" 
                                     ? <button type="submit" className={style.submit_cancel} onClick={() => {
-                                        axios.get(`/api/user/getStatusDelete?email=${localStorage.getItem("email")}`).then(() => setCanReloadOrder(prevState => !prevState))
+                                        axios.get(`/api/user/getStatusDelete`).then(() => setCanReloadOrder(prevState => !prevState))
 
                                     }}><span>Отменить</span></button>
                                     : <button type="submit" className={style.submit} ><span>Задать вопрос</span></button>
@@ -80,7 +84,7 @@ const UserProfile = () => {
                 <h1> История заказов </h1>
                 <div className={style.achiv_rect}>
                 </div>
-                {user?.orders.length !== 0 ? <table className={style.table}>
+                {user?.orders?.length !== 0 ? <table className={style.table}>
                     <thead>
                         <tr>
                             <td>Начальный ММР</td>
@@ -91,7 +95,7 @@ const UserProfile = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {user?.orders.map((item, idx) => <tr key={idx + "userKey"} className={style.userItem}>
+                        {user?.orders?.map((item, idx) => <tr key={idx + "userKey"} className={style.userItem}>
                             <td className={style.userItem__login}>{item.startMMR}</td>
                             <td className={style.userItem__login}>{item.endMMR}</td>
                             <td className={style.userItem__login}>{item.countLP}</td>

@@ -2,6 +2,7 @@ package ru.borisova.boostingservice.controllers;
 
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,28 +14,27 @@ import ru.borisova.boostingservice.service.UserService;
 @RestController
 @RequestMapping("api/user")
 @AllArgsConstructor
-@PreAuthorize("hasAuthority('user')")
 public class UserController {
 
     private final UserService userService;
 
     @GetMapping("getUserInfo")
-    public ViewUserModel getUserInfo(String email) {
-        return userService.getUserOrders(email);
+    public ViewUserModel getUserInfo(Authentication auth) {
+        return userService.getUserOrders(auth.getName());
     }
 
     @GetMapping("getNewOrderInfo")
-    public ListOrder getNewOrderInfo(@RequestParam String email) {
-        return userService.getNewOrderInfo(email);
+    public ListOrder getNewOrderInfo(Authentication auth) {
+        return userService.getNewOrderInfo(auth.getName());
     }
 
     @GetMapping("getStatusInProcess")
-    public ListOrder getStatusInProcess(@RequestParam String email) {
-        return userService.getStatusOrder(email, "Выполняется");
+    public ListOrder getStatusInProcess(Authentication auth) {
+        return userService.getStatusOrder(auth.getName(), "Выполняется");
     }
 
     @GetMapping("getStatusDelete")
-    public ListOrder getStatusDelete(@RequestParam String email) {
-        return userService.getStatusOrder(email, "Отменен");
+    public ListOrder getStatusDelete(Authentication auth) {
+        return userService.getStatusOrder(auth.getName(), "Отменен");
     }
 }
