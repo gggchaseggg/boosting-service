@@ -43,6 +43,7 @@ public class BoostService {
                 booster.nickname,
                 booster.email,
                 booster.phone,
+                booster.avatar,
                 viewListOrders
         );
     }
@@ -70,6 +71,7 @@ public class BoostService {
                 booster.nickname,
                 booster.email,
                 booster.phone,
+                booster.avatar,
                 viewListOrders
         );
     }

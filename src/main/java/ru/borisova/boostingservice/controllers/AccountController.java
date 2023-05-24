@@ -5,6 +5,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.borisova.boostingservice.models.User;
+import ru.borisova.boostingservice.models.viewModels.ChangeInfoModel;
 import ru.borisova.boostingservice.models.viewModels.LoginModel;
 import ru.borisova.boostingservice.models.viewModels.RegisterModel;
 import ru.borisova.boostingservice.service.UserService;
@@ -39,5 +40,10 @@ public class AccountController {
     @PostMapping("register")
     public User register(@RequestBody RegisterModel model) {
         return userService.register(model);
+    }
+
+    @PostMapping("changeInfo")
+    public User changeInfo(@RequestBody ChangeInfoModel model, Authentication auth) {
+        return userService.changeInfo(model, auth.getName());
     }
 }

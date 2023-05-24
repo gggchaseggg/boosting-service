@@ -2,6 +2,7 @@
 import React from "react";
 import style from "./BoosterProfile.module.scss";
 import {userStore} from "../../../mobx";
+import {EditProfile} from "../components/EditProfile";
 
 type UserProfileTypes = {
     nickname: string;
@@ -38,10 +39,13 @@ const BoosterProfile = () => {
             <div className={style.wrapper_row}>
                 <div className={style.wrapper1_1}>
                     <div>
-                        <img src="/img/Profile/logo.jpg" alt="лого" className={style.logo}/>
+                        <img src={userStore.avatar === "" ? "/img/Profile/logo.jpg" : userStore.avatar} alt="лого" className={style.logo}/>
                     </div>
                     <div className={style.infoUser}>
-                        <h3>{user?.nickname}</h3>
+                        <h3>
+                            {user?.nickname + "   "}
+                            <EditProfile/>
+                        </h3>
                         <h5>{user?.email}</h5>
                         <h5>{user?.phone}</h5>
                     </div>

@@ -19,6 +19,7 @@ public class User {
     public String phone;
     public String password;
     public String role;
+    public String avatar;
 
     public User(String nickname, String email, String phone, String password)
     {
@@ -27,6 +28,7 @@ public class User {
         this.password = password;
         this.phone = phone;
         this.role = "user";
+        this.avatar = "";
     }
 
     public User(Long id, String nickname, String email, String phone, String role) {
@@ -35,5 +37,6 @@ public class User {
         this.email = email;
         this.phone = phone;
         this.role = role;
+        this.avatar = "";
     }
 }

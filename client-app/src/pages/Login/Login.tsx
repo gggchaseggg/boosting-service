@@ -64,30 +64,16 @@ const Login = () => {
         const response = await axios.post("/api/account/login", formData)
         if (response.status === 400) {
             userStore.clear()
-            // localStorage.clear();
             loginSetError("username", { type: "custom", message: "chto-to ne tak" })
         } else {
             axios.get('/api/account/getUserInfo')
                 .then(({data}) => {
-                    userStore.setAll(data.nickname, data.email, data.role)
+                    userStore.setAll(data.nickname, data.email, data.role, data.phone, data.avatar)
+                    navigate("/profile")
                 })
 
-            // userStore.setEmail(data.username)
-            // // localStorage.setItem("email", data.username);
-            // axios.get(`/api/account/getnickname`)
-            //     .then(({ data }) => {
-            //         // dispatch(setUser({nickname: data}))
-            //         userStore.setNickname(data)
-            //     })
-            navigate("/profile");
         }
-        // else {
-        //     localStorage.setItem("email", data.username);
-        //     axios.get(`/api/account/getnickname/${data.username}`).then(({ data }) => dispatch(setUser({ nickname: data })))
-        //     document.cookie = `role=${accountRole};`
-        //     loginReset();
-        //     navigate("/profile");
-        // }
+
     }
 
     return (

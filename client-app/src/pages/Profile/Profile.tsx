@@ -6,6 +6,7 @@ import BoosterProfile from "./BoosterProfile/BoosterProfile";
 import { useNavigate } from "react-router-dom";
 import {userStore} from "../../mobx";
 import {observer} from "mobx-react-lite";
+import axios from "axios";
 
 const Profile = () => {
 
@@ -15,6 +16,7 @@ const Profile = () => {
         <div className={style.wrapper}>
             <button className={style.exitButton} onClick={
                 () => {
+                    axios.get("/api/account/logout")
                     userStore.clear()
                     navigate("/");
                 }

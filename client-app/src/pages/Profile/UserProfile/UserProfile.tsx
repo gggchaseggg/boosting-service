@@ -2,6 +2,7 @@
 import React from "react";
 import style from "./UserProfile.module.scss";
 import {EditProfile} from "../components/EditProfile";
+import {userStore} from "../../../mobx";
 
 type UserProfileTypes = {
     nickname: string;
@@ -36,7 +37,7 @@ const UserProfile = () => {
             <div className={style.wrapper_row}>
                 <div className={style.wrapper1_1}>
                     <div>
-                        <img src="/img/Profile/logo.jpg" alt="лого" className={style.logo} />
+                        <img src={userStore.avatar === "" ? "/img/Profile/logo.jpg" : userStore.avatar} alt="лого" className={style.logo} />
                     </div>
                     <div className={style.infoUser}>
                         <h3>

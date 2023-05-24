@@ -1,4 +1,4 @@
-import {ChangeEvent, MouseEvent, useState} from 'react';
+import {ChangeEvent, MouseEvent, useEffect, useState} from 'react';
 import {
     Avatar,
     Button,
@@ -13,14 +13,22 @@ import {
     TextField
 } from "@mui/material";
 import {Edit as EditIcon, Visibility, VisibilityOff} from '@mui/icons-material'
+import {userStore} from "../../../../mobx";
+import axios from "axios";
 
 const EditProfile = () => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [avatar, setAvatar] = useState('')
     const [nickname, setNickname] = useState('')
-    const [telephone, setTelephone] = useState('')
+    const [phone, setPhone] = useState('')
     const [password, setPassword] = useState('')
     const [showPassword, setShowPassword] = useState(false);
+
+    useEffect(() => {
+        setAvatar(userStore.avatar)
+        setNickname(userStore.nickname)
+        setPhone(userStore.telephone)
+    }, [isDialogOpen])
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -36,8 +44,22 @@ const EditProfile = () => {
         setIsDialogOpen(false)
         setAvatar('')
         setNickname('')
-        setTelephone('')
+        setPhone('')
         setPassword('')
+    }
+
+    const submitChange = () => {
+
+        const formData = {
+            avatar,
+            nickname,
+            phone,
+            password
+        }
+
+        axios.post("/api/account/changeInfo", formData).then(() => window.location.reload())
+
+        setIsDialogOpen(false)
     }
 
 
@@ -60,9 +82,9 @@ const EditProfile = () => {
                                    setNickname(event.target.value)
                                }}/>
                     <TextField id="telephone" label="Телефон" variant="standard" fullWidth margin="normal"
-                               value={telephone}
+                               value={phone}
                                onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                                   setTelephone(event.target.value)
+                                   setPhone(event.target.value)
                                }}/>
                     {/*<TextField id="password" label="Пароль" type="password" variant="standard" fullWidth margin="normal"*/}
                     {/*           value={password}*/}
@@ -93,7 +115,7 @@ const EditProfile = () => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={closeDialog}>ЗАКРЫТЬ</Button>
-                    <Button onClick={toggleDialog} variant="contained">СОХРАНИТЬ</Button>
+                    <Button onClick={submitChange} variant="contained">СОХРАНИТЬ</Button>
                 </DialogActions>
             </Dialog>
         </>

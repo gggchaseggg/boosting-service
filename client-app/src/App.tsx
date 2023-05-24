@@ -21,7 +21,7 @@ export default function App() {
     React.useEffect(() => {
         axios.get('/api/account/getUserInfo')
             .then(({data}) => {
-                userStore.setAll(data.nickname, data.email, data.role)
+                userStore.setAll(data.nickname, data.email, data.role, data.phone, data.avatar)
             })
             .catch(() => userStore.clear())
 

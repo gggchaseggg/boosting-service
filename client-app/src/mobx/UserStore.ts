@@ -4,6 +4,8 @@ class UserStore {
     email: string = ''
     nickname: string = ''
     role: string = ''
+    telephone: string = ''
+    avatar: string = ''
 
     constructor() {
         makeAutoObservable(this)
@@ -18,19 +20,47 @@ class UserStore {
     }
 
     setRole(role: string) {
-        this.nickname = role
+        this.role = role
     }
 
-    setAll(nickname: string = '', email: string = '', role: string = '') {
+    setTelephone(telephone: string) {
+        this.telephone = telephone
+    }
+
+    setAvatar(avatar: string) {
+        this.avatar = avatar
+    }
+
+    setAll(
+        nickname = '',
+        email = '',
+        role = '',
+        telephone = '',
+        avatar = ''
+    ) {
         this.nickname = nickname
         this.email = email
         this.role = role
+        this.telephone = telephone
+        this.avatar = avatar
     }
 
     clear() {
         this.nickname = ''
         this.email = ''
         this.role = ''
+        this.telephone = ''
+        this.avatar = ''
+    }
+
+    isLogin(): boolean {
+        return !(
+            this.nickname === ''
+            && this.email === ''
+            && this.role === ''
+            && this.telephone === ''
+            && this.avatar === ''
+        )
     }
 }
 
