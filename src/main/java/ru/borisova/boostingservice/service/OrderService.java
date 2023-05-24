@@ -11,6 +11,7 @@ import ru.borisova.boostingservice.repository.ServiceRepository;
 import ru.borisova.boostingservice.repository.UserRepository;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Component
 @RequiredArgsConstructor
@@ -22,7 +23,7 @@ public class OrderService {
 
     public boolean isUserHasOrders(String email) {
         User user = userRepository.findFirstByEmail(email);
-        if (user.role == "user") {
+        if (Objects.equals(user.role, "user")) {
             Integer countActualOrders = orderRepository
                     .findAllByUser(user)
                     .stream().filter(order -> order.status != "Выполнен" && order.status != "Отменен")
@@ -30,7 +31,7 @@ public class OrderService {
                     .size();
             return countActualOrders > 0;
         }
-        else if (user.role == "booster") {
+        else if (Objects.equals(user.role, "booster")) {
             Integer countActualOrders = orderRepository
                     .findAllByBooster(user)
                     .stream().filter(order -> order.status != "Выполнен" && order.status != "Отменен")
@@ -41,20 +42,56 @@ public class OrderService {
         else return false;
     }
 
-    public Order createNewOrder(OrderViewModel viewModel) {
-        User client = userRepository.findFirstByEmail(viewModel.email);
-        Service service = serviceRepository.findFirstByName(viewModel.service);
+    public Order createNewOrder(Order viewModel, String email) {
+        User client = userRepository.findFirstByEmail(email);
 
-        Order order = new Order(
-                client,
-                service,
-                LocalDate.now(),
-                viewModel.startMMR,
-                viewModel.endMMR,
-                viewModel.countLP,
-                Math.round(viewModel.cost),
-                "Ожидает подтверждения"
-        );
-        return orderRepository.save(order);
+        viewModel.setUser(client);
+
+        return orderRepository.save(viewModel);
+    }
+
+    public Order check(OrderViewModel model, String type, String email) {
+        Service service = serviceRepository.findFirstByName(type);
+        User client = userRepository.findFirstByEmail(email);
+
+        Order order;
+
+        if (Objects.equals(type, "boost")) {
+            order = new Order(
+                    client,
+                    service,
+                    LocalDate.now(),
+                    model.startMMR,
+                    model.endMMR,
+                    model.countLP,
+                    Math.round((model.endMMR - model.startMMR) * service.cost * service.discount),
+                    "Ожидает подтверждения"
+            );
+        } else if (Objects.equals(type, "lp")) {
+            order = new Order(
+                    client,
+                    service,
+                    LocalDate.now(),
+                    model.startMMR,
+                    model.endMMR,
+                    model.countLP,
+                    Math.round(model.countLP * service.cost * service.discount),
+                    "Ожидает подтверждения"
+            );
+
+        } else {
+            order = new Order(
+                    client,
+                    service,
+                    LocalDate.now(),
+                    model.startMMR,
+                    model.endMMR,
+                    model.countLP,
+                    Math.round(service.cost * service.discount),
+                    "Ожидает подтверждения"
+            );
+        }
+
+        return order;
     }
 }

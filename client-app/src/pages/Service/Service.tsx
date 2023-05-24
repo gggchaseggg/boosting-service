@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import PATHS from "../../data/paths";
 import axios from "axios";
 import {userStore} from "../../mobx";
+import {observer} from "mobx-react-lite";
 
 type FormType = {
     email: string;
@@ -22,10 +23,7 @@ function AuthButton() {
 }
 
 
-
-export default function Service() {
-
-
+const Service = () => {
     const [width, setWidth] = useState(300);
     const [mmrnow, setMmrnow] = useState(0);
     const [lastmmr, setLastmmr] = useState(1);
@@ -33,13 +31,19 @@ export default function Service() {
     const isAuth = !!userStore.email
     const [canOrder, setCanOrder] = useState(true);
 
-    function sendOrder(order: FormType) {
-        axios.post("/api/order/create", order)
-          .then(r => {
-              console.log(r)
-              setCanOrder(false)
-          })
-          .catch(e => console.info(e))
+    async function sendOrder(order: FormType) {
+        const {data: checkOrder} = await axios.post("/api/order/check", order)
+
+        if (!canOrder) alert("У вас уже есть заказ, завершите его или отмените")
+        else if(window.confirm(`Вы действительно хотите оформить заказ? \n Стоимость заказа: ${checkOrder.cost}`)) {
+            axios.post("/api/order/create", checkOrder)
+                .then(r => {
+                    setCanOrder(false)
+                })
+                .catch(e => console.info(e))
+        }
+
+
     }
 
     const changeWidth = (event: any) => {
@@ -59,13 +63,10 @@ export default function Service() {
     };
 
     useEffect(() => {
-        const email = userStore.email
-        if (email) axios.get(`/api/order/isUserHasOrders?email=${email}`).then((r) => {
-            if (r.data) setCanOrder(false)
-            else if (!r.data) setCanOrder(true)
-            else console.log(r)
+        if (userStore.email) axios.get(`/api/order/isUserHasOrders`).then((r) => {
+            setCanOrder(!r.data)
         })
-    }, [])
+    }, [userStore.email])
 
     const {
         register: boostRegister,
@@ -76,7 +77,7 @@ export default function Service() {
 
     const onBoostSubmit: SubmitHandler<FormType> = async (data) => {
         if (!canOrder) alert("У вас уже есть заказ, завершите его или отмените")
-        else if (window.confirm("Вы действительно хотите оформить заказ?")) {
+        else {
             const boostOrder: FormType = {
                 cost: +width * 2.5 * 0.66,
                 countLP: 0,
@@ -100,7 +101,7 @@ export default function Service() {
 
     const onCalibrationSubmit: SubmitHandler<FormType> = async (data) => {
         if (!canOrder) alert("У вас уже есть заказ, завершите его или отмените")
-        else if (window.confirm("Вы действительно хотите оформить заказ?")) {
+        else {
             const calibrationOrder: FormType = {
                 cost: 1088,
                 countLP: 0,
@@ -125,7 +126,7 @@ export default function Service() {
 
     const onLpSubmit: SubmitHandler<FormType> = async (data) => {
         if (!canOrder) alert("У вас уже есть заказ, завершите его или отмените")
-        else if (window.confirm("Вы действительно хотите оформить заказ?")) {
+        else {
             const lpOrder: FormType = {
                 // @ts-ignore
                 cost: +data.countLP * 50,
@@ -146,17 +147,17 @@ export default function Service() {
             <div className={style.radioButtons}>
                 <input type="radio" name="logReg" id={style.boost} defaultChecked={true} />
                 <label htmlFor={style.boost}
-                    id={style.boostLabel}
+                       id={style.boostLabel}
                 >Буст
                 </label>
                 <input type="radio" name="logReg" id={style.calibration} />
                 <label htmlFor={style.calibration}
-                    id={style.calibrationLabel}
+                       id={style.calibrationLabel}
                 >Калибровка
                 </label>
                 <input type="radio" name="logReg" id={style.lp} />
                 <label htmlFor={style.lp}
-                    id={style.lpLabel}
+                       id={style.lpLabel}
                 >LP
                 </label>
             </div>
@@ -282,4 +283,6 @@ export default function Service() {
             </div>
         </div>
     );
-}
+};
+
+export default observer(Service);

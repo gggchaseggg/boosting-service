@@ -20,7 +20,12 @@ public class OrderController {
     }
 
     @PostMapping("create")
-    public Order createNewOrder(@RequestBody OrderViewModel viewOrder) {
-        return orderService.createNewOrder(viewOrder);
+    public Order createNewOrder(@RequestBody Order viewOrder, Authentication auth) {
+        return orderService.createNewOrder(viewOrder, auth.getName());
+    }
+
+    @PostMapping("check")
+    public Order check(@RequestBody OrderViewModel viewOrder, Authentication auth) {
+        return orderService.check(viewOrder, viewOrder.service, auth.getName());
     }
 }
