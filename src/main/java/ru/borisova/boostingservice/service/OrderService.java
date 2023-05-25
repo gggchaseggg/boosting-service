@@ -26,7 +26,7 @@ public class OrderService {
         if (Objects.equals(user.role, "user")) {
             Integer countActualOrders = orderRepository
                     .findAllByUser(user)
-                    .stream().filter(order -> order.status != "Выполнен" && order.status != "Отменен")
+                    .stream().filter(order -> (!Objects.equals(order.status, "Выполнен") && !Objects.equals(order.status, "Отменен")))
                     .toList()
                     .size();
             return countActualOrders > 0;
@@ -34,7 +34,7 @@ public class OrderService {
         else if (Objects.equals(user.role, "booster")) {
             Integer countActualOrders = orderRepository
                     .findAllByBooster(user)
-                    .stream().filter(order -> order.status != "Выполнен" && order.status != "Отменен")
+                    .stream().filter(order -> !Objects.equals(order.status, "Выполнен") && !Objects.equals(order.status, "Отменен"))
                     .toList()
                     .size();
             return countActualOrders > 0;

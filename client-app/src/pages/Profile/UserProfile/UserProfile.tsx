@@ -3,6 +3,7 @@ import React from "react";
 import style from "./UserProfile.module.scss";
 import {EditProfile} from "../components/EditProfile";
 import {userStore} from "../../../mobx";
+import OrdersTable from "../components/OrdersTable/OrdersTable";
 
 type UserProfileTypes = {
     nickname: string;
@@ -11,11 +12,11 @@ type UserProfileTypes = {
     orders: OrderWaitingTypes[];
 }
 
-type OrderWaitingTypes = {
+export type OrderWaitingTypes = {
     id: number;
-    startMMR: number | null;
-    endMMR: number | null;
-    countLP: number | null;
+    startMMR: number;
+    endMMR: number;
+    countLP: number;
     cost: number;
     status: string;
 }
@@ -107,6 +108,10 @@ const UserProfile = () => {
                     </tbody>
                 </table> : <h2>Нет заказов</h2>}
             </div>
+            {
+                user?.orders && <OrdersTable data={user.orders}/>
+            }
+            <div style={{height:100}}/>
         </div>
     );
 }
