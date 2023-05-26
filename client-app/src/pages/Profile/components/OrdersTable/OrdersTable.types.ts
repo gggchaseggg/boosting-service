@@ -22,8 +22,11 @@ export type TableProps = {
     onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
     order: Order;
     orderBy: string;
+    isBooster?: boolean
 }
 
 export type OrdersPropsTypes = {
-    data: OrderWaitingTypes[]
+    data: OrderWaitingTypes[],
+    isBooster?: boolean,
+    canUpdate?: React.Dispatch<React.SetStateAction<boolean>>
 }

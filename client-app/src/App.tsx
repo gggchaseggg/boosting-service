@@ -14,6 +14,7 @@ import ScrollToTop from "./util/ScrollToTop";
 import './App.css';
 import Profile from "./pages/Profile/Profile";
 import {userStore} from "./mobx";
+import {colors, createTheme, ThemeProvider} from "@mui/material";
 
 export default function App() {
 
@@ -27,21 +28,30 @@ export default function App() {
 
     }, [userStore])
 
+    const theme = createTheme({
+        palette: {
+            primary: {
+                main: colors.purple[500],
+            }
+        },
+    });
 
     return (
         <>
-            <Router>
-                <ScrollToTop/>
-                <Routes>
-                    <Route path={PATHS.MAIN} element={<Layout/>}>
-                        <Route path="" element={<Main/>}/>
-                        <Route path={PATHS.PROFILE} element={<Profile/>}/>
-                        <Route path={PATHS.LOGIN} element={<Login/>}/>
-                        <Route path={PATHS.SERVICES} element={<Service/>}/>
-                        <Route path="*" element={<NotFound/>}/>
-                    </Route>
-                </Routes>
-            </Router>
+            <ThemeProvider theme={theme}>
+                <Router>
+                    <ScrollToTop/>
+                    <Routes>
+                        <Route path={PATHS.MAIN} element={<Layout/>}>
+                            <Route path="" element={<Main/>}/>
+                            <Route path={PATHS.PROFILE} element={<Profile/>}/>
+                            <Route path={PATHS.LOGIN} element={<Login/>}/>
+                            <Route path={PATHS.SERVICES} element={<Service/>}/>
+                            <Route path="*" element={<NotFound/>}/>
+                        </Route>
+                    </Routes>
+                </Router>
+            </ThemeProvider>
         </>
     );
 }

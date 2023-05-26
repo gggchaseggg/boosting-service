@@ -2,7 +2,7 @@
 import React from "react";
 import style from "./BoosterProfile.module.scss";
 import {userStore} from "../../../mobx";
-import {EditProfile} from "../components/EditProfile";
+import {EditProfile,OrdersTable} from "../components";
 
 type UserProfileTypes = {
     nickname: string;
@@ -34,12 +34,15 @@ const BoosterProfile = () => {
         axios.get(`api/booster/check`).then(({data}) => setOrderNow(data))
     }, [userStore, canReloadOrder])
 
+    console.log(newOrder)
+
     return (
         <div>
             <div className={style.wrapper_row}>
                 <div className={style.wrapper1_1}>
                     <div>
-                        <img src={userStore.avatar === "" ? "/img/Profile/logo.jpg" : userStore.avatar} alt="лого" className={style.logo}/>
+                        <img src={userStore.avatar === "" ? "/img/Profile/logo.jpg" : userStore.avatar} alt="лого"
+                             className={style.logo}/>
                     </div>
                     <div className={style.infoUser}>
                         <h3>
@@ -82,40 +85,14 @@ const BoosterProfile = () => {
                     <h1>Новые заявки</h1>
                     <div className={style.achiv_rect}>
                     </div>
-                    {newOrder?.orders.length !== 0 && <table className={style.table}>
-                        <thead>
-                        <tr>
-                            <td>Начальный ММР</td>
-                            <td>Конечный ММР</td>
-                            <td>Количество игр SingleDraft</td>
-                            <td>Стоимость</td>
-                            <td>Статус</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {newOrder?.orders.map((item, idx) => <tr key={idx + "userKey"} className={style.userItem}>
-                            <td className={style.userItem__login}>{item.startMMR}</td>
-                            <td className={style.userItem__login}>{item.endMMR}</td>
-                            <td className={style.userItem__login}>{item.countLP}</td>
-                            <td className={style.userItem__login}>{item.cost}</td>
-                            <td className={style.userItem__login}>{item.status}</td>
-                            <td>
-                                <button onClick={() => {
-                                    axios.get(`/api/booster/getNewOrder?orderid=${item.id}`).then(() => setCanReloadOrder(prevState => !prevState))
-                                }}>Взять в работу
-                                </button>
-                            </td>
-                            <td>
-                                <button onClick={() => {
-                                    axios.get(`/api/booster/getOrderStatusCancel?orderid=${item.id}`).then(() => setCanReloadOrder(prevState => !prevState))
-                                }}>Отменить
-                                </button>
-                            </td>
-                        </tr>)}
-                        </tbody>
-                    </table>}
+
+                    {
+                        newOrder && newOrder.orders.length !== 0
+                            // @ts-ignore
+                            ? <OrdersTable data={newOrder.orders} isBooster canUpdate={setCanReloadOrder}/>
+                            : <h2>Нет новых заказов</h2>
+
+                    }
                 </div>}
             <div className={style.wrapper}>
                 <div className={style.achiv_rect}>
@@ -123,26 +100,12 @@ const BoosterProfile = () => {
                 <h1>История заказов</h1>
                 <div className={style.achiv_rect}>
                 </div>
-                {user?.orders.length !== 0 ? <table className={style.table}>
-                    <thead>
-                    <tr>
-                        <td>Начальный ММР</td>
-                        <td>Конечный ММР</td>
-                        <td>Количество игр SingleDraft</td>
-                        <td>Стоимость</td>
-                        <td>Статус</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {user?.orders.map((item, idx) => <tr key={idx + "userKey"} className={style.userItem}>
-                        <td className={style.userItem__login}>{item.startMMR}</td>
-                        <td className={style.userItem__login}>{item.endMMR}</td>
-                        <td className={style.userItem__login}>{item.countLP}</td>
-                        <td className={style.userItem__login}>{item.cost}</td>
-                        <td className={style.userItem__login}>{item.status}</td>
-                    </tr>)}
-                    </tbody>
-                </table> : <h2>Нет заказов</h2>}
+                {
+                    user?.orders
+                        // @ts-ignore
+                        ? <OrdersTable data={user.orders}/>
+                        : <h2>Нет заказов</h2>
+                }
             </div>
 
 

@@ -86,30 +86,9 @@ const UserProfile = () => {
                 <h1> История заказов </h1>
                 <div className={style.achiv_rect}>
                 </div>
-                {user?.orders?.length !== 0 ? <table className={style.table}>
-                    <thead>
-                        <tr>
-                            <td>Начальный ММР</td>
-                            <td>Конечный ММР</td>
-                            <td>Количество игр SingleDraft</td>
-                            <td>Стоимость</td>
-                            <td>Статус</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {user?.orders?.map((item, idx) => <tr key={idx + "userKey"} className={style.userItem}>
-                            <td className={style.userItem__login}>{item.startMMR}</td>
-                            <td className={style.userItem__login}>{item.endMMR}</td>
-                            <td className={style.userItem__login}>{item.countLP}</td>
-                            <td className={style.userItem__login}>{item.cost}</td>
-                            <td className={style.userItem__login}>{item.status}</td>
-
-                        </tr>)}
-                    </tbody>
-                </table> : <h2>Нет заказов</h2>}
             </div>
             {
-                user?.orders && <OrdersTable data={user.orders}/>
+                user?.orders ? <OrdersTable data={user.orders}/> : <h2>Нет заказов</h2>
             }
             <div style={{height:100}}/>
         </div>

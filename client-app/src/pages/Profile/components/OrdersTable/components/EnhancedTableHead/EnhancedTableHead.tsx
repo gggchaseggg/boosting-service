@@ -8,7 +8,7 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import Box from "@mui/material/Box";
 import {visuallyHidden} from "@mui/utils";
 
-const EnhancedTableHead: FC<TableProps> = ({order, orderBy, onRequestSort}) => {
+const EnhancedTableHead: FC<TableProps> = ({order, orderBy, onRequestSort, isBooster = false}) => {
     const createSortHandler =
         (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
             onRequestSort(event, property);
@@ -36,6 +36,16 @@ const EnhancedTableHead: FC<TableProps> = ({order, orderBy, onRequestSort}) => {
                         </TableSortLabel>
                     </TableCell>
                 ))}
+                {
+                    isBooster &&
+                    (
+                        <>
+                            <TableCell>Взять в работу</TableCell>
+                            <TableCell>Отменить</TableCell>
+                        </>
+                    )
+                }
+
             </TableRow>
         </TableHead>
     );
