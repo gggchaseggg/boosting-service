@@ -36,6 +36,9 @@ const Header = () => {
                     <li className={style.navItem}>
                         <NavLink to={PATHS.WORK} className={style.colorLink}>Работа</NavLink>
                     </li>
+                    <li className={style.navItem}>
+                        <NavLink to={PATHS.REVIEW} className={style.colorLink}>Отзывы</NavLink>
+                    </li>
                     <div>
                         <div>
                             <HeaderLogin/>

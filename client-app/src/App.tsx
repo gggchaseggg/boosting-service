@@ -15,6 +15,7 @@ import './App.css';
 import Profile from "./pages/Profile/Profile";
 import {userStore} from "./mobx";
 import {colors, createTheme, ThemeProvider} from "@mui/material";
+import Review from "./pages/Review/Review";
 
 export default function App() {
 
@@ -47,6 +48,7 @@ export default function App() {
                             <Route path={PATHS.PROFILE} element={<Profile/>}/>
                             <Route path={PATHS.LOGIN} element={<Login/>}/>
                             <Route path={PATHS.SERVICES} element={<Service/>}/>
+                            <Route path={PATHS.REVIEW} element={<Review/>}/>
                             <Route path="*" element={<NotFound/>}/>
                         </Route>
                     </Routes>
